@@ -19,7 +19,7 @@ const (
 	Grade    = `<strong[^>]*property="v:average">([^<]*)</strong>`
 	Online   = `<span[^>]*property="v:initialReleaseDate"[^>]*>([^<]*)</span>`
 	Image    = `<img[^>]*src="([^>]*)"[^>]*rel="v:image"[^>]*/>`
-	Urls     = `<a[^>]*href="([^>]*)"[^>]*>`
+	Urls     = `<dd>[^<]*<a[^>]*href="([^\"]*)"[^>]*>[^<]*</a>[^<]*</dd>`
 )
 
 type MovieInfo struct {

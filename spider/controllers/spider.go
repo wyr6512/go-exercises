@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/httplib"
 	"go-exercises/spider/models"
 	"strings"
@@ -14,9 +13,9 @@ type SpiderController struct {
 
 func (c *SpiderController) GetMovie() {
 	var movieInfo models.MovieInfo
-	models.ConnectRedis("127.0.0.1:6379")              //连接redis
-	url := "https://movie.douban.com/subject/3168101/" //指定抓取入口页面
-	models.InQueue(url)                                //url入队列
+	models.ConnectRedis("127.0.0.1:6379")                            //连接redis
+	url := "https://movie.douban.com/subject/27615233/?from=showing" //指定抓取入口页面
+	models.InQueue(url)                                              //url入队列
 	for {
 		length := models.GetQueueLen() //队列长度
 		if length == 0 {               //队列为空结束
@@ -41,6 +40,8 @@ func (c *SpiderController) GetMovie() {
 			movieInfo.MovieOnline = strings.Join(models.GetItems(html, models.Online), "/")
 			movieInfo.MoviePic = strings.Join(models.GetItems(html, models.Image), "/")
 			_, err = models.AddMovie(&movieInfo) //入库
+
+			beego.Warning(err)
 			if err != nil {
 				continue
 			}
@@ -53,4 +54,5 @@ func (c *SpiderController) GetMovie() {
 		}
 		time.Sleep(time.Second * 1)
 	}
+	c.Ctx.WriteString("end")
 }
