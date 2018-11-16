@@ -86,7 +86,7 @@ func main() {
 		go func() {
 			for {
 				redisPool.Cmd("PING")
-				time.Sleep(3)
+				time.Sleep(3 * time.Second)
 			}
 		}()
 	}
